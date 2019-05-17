@@ -47,9 +47,15 @@ public class DBManager {
 		InputStream ifs;
 		try {
 			//System.out.println(System.getProperty("user.dir"));
-			ifs = new FileInputStream(configurationFile);
-			properties.load(ifs);
-			ifs.close();
+			String bundleName = Activator.getDefault().getBundle().getSymbolicName();
+			URL bundleurl = new URL("platform:/plugin/" + bundleName + "/" + configurationFile);
+		    InputStream inputStream = bundleurl.openConnection().getInputStream();
+			properties.load(inputStream);
+			inputStream.close();
+			
+//			ifs = new FileInputStream(configurationFile);
+//			properties.load(ifs);
+//			ifs.close();
 			
 			this.driverClassName = properties.getProperty("driverClassName");
 			this.url = properties.getProperty("url");
@@ -112,8 +118,11 @@ public class DBManager {
 	 */
 	private void generateDatabaseTables() throws XPathExpressionException, SQLException, FileNotFoundException, IOException, URISyntaxException{
 		FileParser parser = new FileParser(){}; 
-		Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
-		URL dbFileConfigURL = bundle.getEntry("dbSchema/gen_table.xml");
+		// refer to http://blog.vogella.com/2010/07/06/reading-resources-from-plugin/
+		// this code is more robust than previous version
+		// comment by coder-chenzhi
+		String bundleName = Activator.getDefault().getBundle().getSymbolicName();
+		URL dbFileConfigURL = new URL("platform:/plugin/" + bundleName + "/" + "design/dbSchema/gen_table.xml");
 		
 		File dbFileConfigFile = new File(FileLocator.resolve(dbFileConfigURL).toURI());
 		Document doc = parser.getDocument(dbFileConfigFile);
@@ -133,7 +142,7 @@ public class DBManager {
 			
 			Node table = tableList.item(i);
 			String tableScript = parser.getAttributeValue(table, "script");
-			URL tableScriptURL = bundle.getEntry("dbSchema/" + tableScript);
+			URL tableScriptURL = new URL("platform:/plugin/" + bundleName + "/" + "design/dbSchema/" + tableScript);
 			File tableScriptFile = new File(FileLocator.resolve(tableScriptURL).toURI());
 			runner.runScript(new BufferedReader(new FileReader(tableScriptFile)));
 		}

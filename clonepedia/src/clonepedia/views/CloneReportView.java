@@ -150,7 +150,7 @@ public class CloneReportView extends SummaryView {
 					
 					syntacticSetWrapper = DiffUtil.constructDiff(syntacticSetWrapper);
 //					if(Settings.diffComparisonMode.equals("ASTNode_Based")){
-//						syntacticSetWrapper = new CloneInformationExtractor().extractCounterRelationalDifferencesOfCloneSet(syntacticSetWrapper);					
+//						syntacticSetWrapper = new CloneInformationExtractor().extractCounterRelationalDifferencesOfCloneSet(syntacticSetWrapper);
 //					}
 //					else if(Settings.diffComparisonMode.equals("Statement_Based")){
 //						try {

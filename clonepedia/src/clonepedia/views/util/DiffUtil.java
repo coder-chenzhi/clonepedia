@@ -26,6 +26,13 @@ import mcidiff.model.Token;
 import mcidiff.model.TokenSeq;
 
 public class DiffUtil {
+	
+	/**
+	 * Construct diff based on cloneSet, and return the cloneSet after added the diff result, 
+	 * it will return null if exception happens during the construction
+	 * @param cloneSet
+	 * @return
+	 */
 	public static clonepedia.java.model.CloneSetWrapper constructDiff(clonepedia.java.model.CloneSetWrapper cloneSet) {
 		CloneSet set = convertToMCIDiffModel(cloneSet);
 
